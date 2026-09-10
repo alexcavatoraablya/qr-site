@@ -3,6 +3,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import type {ILoginType} from "./types.ts";
 import {loginSchema} from "./validate.ts";
 import clsx from "clsx";
+import axios from "axios";
 
 const LoginPage = () => {
     const defaultValues : ILoginType =
@@ -21,8 +22,17 @@ const LoginPage = () => {
         defaultValues
     });
 
-    const onSubmit: SubmitHandler<ILoginType> = (data) => {
-        console.log("Валідні дані форми:", data);
+    //оголошується функція. приймає дані які ввів юзер
+    const onSubmit: SubmitHandler<ILoginType> = async (data) => {
+        try {
+            //відправляє http-запит методом post за допомогою axios на сервер
+            const response = await axios.post('http://localhost:5124/api/Users', data);
+            //повертає дані юзера
+            console.log('Успішна відповідь сервера:', response.data);
+        } catch (error) {
+            //видає помилку
+            console.error('Помилка при відправці:', error);
+        }
     };
 
     return (
