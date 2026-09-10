@@ -4,6 +4,7 @@ import type {ILoginType} from "./types.ts";
 import {loginSchema} from "./validate.ts";
 import clsx from "clsx";
 import axios from "axios";
+import api from "../../api/axiosInstance.ts";
 
 const LoginPage = () => {
     const defaultValues : ILoginType =
@@ -16,6 +17,7 @@ const LoginPage = () => {
         register,
         handleSubmit,
         //reset,
+        setError, //Дозволяє в React-Hook-Form записувати помилку
         formState: {errors, isDirty}, //якщо є помилки
     } = useForm<ILoginType>({
         resolver: zodResolver(loginSchema),
@@ -23,15 +25,16 @@ const LoginPage = () => {
     });
 
     //оголошується функція. приймає дані які ввів юзер
-    const onSubmit: SubmitHandler<ILoginType> = async (data) => {
+    const onSubmit: SubmitHandler<ILoginType> = async (data: ILoginType) => {
         try {
             //відправляє http-запит методом post за допомогою axios на сервер
-            const response = await axios.post('http://localhost:5124/api/Users', data);
+            const response = await api.post('/account/login', data);
             //повертає дані юзера
             console.log('Успішна відповідь сервера:', response.data);
         } catch (error) {
             //видає помилку
             console.error('Помилка при відправці:', error);
+            setError("root", { message: "Дані вказано невірно" }); //записуємо помилку що дані вказані невірно
         }
     };
 
@@ -42,6 +45,10 @@ const LoginPage = () => {
                     <h1 className="text-2xl font-bold text-center text-gray-900">Вхід</h1>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+
+                        {errors.root && (
+                            <div className="text-red-700 text-sm text-center">{errors.root.message}</div>
+                        )}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                             <input
