@@ -1,10 +1,11 @@
 import {type SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import type {ILoginType} from "./types.ts";
+import type {ILoginResponse, ILoginType} from "./types.ts";
 import {loginSchema} from "./validate.ts";
 import clsx from "clsx";
 import axios from "axios";
 import api from "../../api/axiosInstance.ts";
+import {useNavigate} from "react-router";
 
 const LoginPage = () => {
     const defaultValues : ILoginType =
@@ -12,6 +13,8 @@ const LoginPage = () => {
         email: "",
         password: ""
     }
+
+    const navigate = useNavigate();
 
     const {
         register,
@@ -28,9 +31,12 @@ const LoginPage = () => {
     const onSubmit: SubmitHandler<ILoginType> = async (data: ILoginType) => {
         try {
             //відправляє http-запит методом post за допомогою axios на сервер
-            const response = await api.post('/account/login', data);
+            const response = await api.post<ILoginResponse>('/account/login', data);
+            localStorage.setItem("auth", response.data.token);
+            navigate("/"); // перехід на головну
+
             //повертає дані юзера
-            console.log('Успішна відповідь сервера:', response.data);
+            //console.log('Успішна відповідь сервера:', response.data);
         } catch (error) {
             //видає помилку
             console.error('Помилка при відправці:', error);
