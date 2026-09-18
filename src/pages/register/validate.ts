@@ -18,7 +18,7 @@ export const registerSchema = z
 
         password: z
             .string()
-            .min(8, "Пароль повинен містити мінімум 8 символів"),
+            .min(8, "Пароль повинен містити мінімум 6 символів"),
 
         confirmPassword: z
             .string()

@@ -3,6 +3,9 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {registerSchema} from "./validate.ts";
 import type {IRegisterType} from "./types.ts";
 import {useState} from "react";
+import {useNavigate} from "react-router";
+import type {ILoginResponse} from "../login/types.ts";
+import api from "../../api/axiosInstance.ts";
 
 const RegisterPage = () => {
 
@@ -28,8 +31,22 @@ const RegisterPage = () => {
         defaultValues
     });
 
-    const onSubmit: SubmitHandler<IRegisterType> = (data) => {
-        console.log("Валідні дані форми:", data);
+    const navigate = useNavigate();
+
+    const onSubmit = async (data: IRegisterType) => {
+        try {
+            //відправляє http-запит методом post за допомогою axios на сервер
+            const response = await api.post<ILoginResponse>('/account/register', data);
+            localStorage.setItem("auth", response.data.token);
+            navigate("/"); // перехід на головну
+
+            //повертає дані юзера
+            //console.log('Успішна відповідь сервера:', response.data);
+        } catch (error) {
+            //видає помилку
+            console.error('Помилка при відправці:', error);
+            //setError("root", { message: "Дані вказано невірно" }); //записуємо помилку що дані вказані невірно
+        }
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
