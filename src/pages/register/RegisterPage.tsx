@@ -36,8 +36,13 @@ const RegisterPage = () => {
     const onSubmit = async (data: IRegisterType) => {
         try {
             //відправляє http-запит методом post за допомогою axios на сервер
-            const response = await api.post<ILoginResponse>('/account/register', data);
-            localStorage.setItem("auth", response.data.token);
+            const result = await api.post<ILoginResponse>("/account/register", data,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+            localStorage.setItem("auth", result.data.token);
             navigate("/"); // перехід на головну
 
             //повертає дані юзера
