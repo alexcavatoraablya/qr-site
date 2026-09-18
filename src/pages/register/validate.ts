@@ -20,6 +20,9 @@ export const registerSchema = z
         confirmPassword: z
             .string()
             .min(1, "Підтвердіть пароль"),
+        imageFile: z
+            .string()
+            .min(1, "Вставте зображення"),
     })
     .refine((data) => data.password === data.confirmPassword, {
         message: "Паролі не співпадають",

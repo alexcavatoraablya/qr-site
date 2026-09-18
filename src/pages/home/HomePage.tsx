@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import axios from "axios";
+// axios from "axios";
 import type {IUser} from "./types.ts";
 import api from "../../api/axiosInstance.ts";
 
@@ -36,7 +36,7 @@ const HomePage = () => {
                             className="flex items-center gap-4 p-3 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
                         >
                             <img
-                                src={user.image}
+                                src={`${import.meta.env.VITE_API_URL}/myimages/${user.image}_432.webp`}
                                 alt={user.fullName}
                                 className="w-12 h-12 rounded-full object-cover border border-gray-200"
                             />

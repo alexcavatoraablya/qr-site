@@ -11,6 +11,7 @@ const RegisterPage = () => {
         email: "",
         password: "",
         confirmPassword: "",
+        imageFile: "",
     }
 
     const {
@@ -79,6 +80,17 @@ const RegisterPage = () => {
                                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                             />
                             {errors.confirmPassword && <p style={{ color: 'red' }}>{errors.confirmPassword.message}</p>}
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Фото</label>
+                            <input
+                                {...register('imageFile')}
+                                type="file"
+                                accept="image/*"
+                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                            />
+                            {errors.imageFile && <p style={{ color: 'red' }}>{errors.imageFile.message}</p>}
                         </div>
 
 

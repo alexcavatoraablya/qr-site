@@ -3,7 +3,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import type {ILoginResponse, ILoginType} from "./types.ts";
 import {loginSchema} from "./validate.ts";
 import clsx from "clsx";
-import axios from "axios";
+//import axios from "axios";
 import api from "../../api/axiosInstance.ts";
 import {useNavigate} from "react-router";
 
@@ -21,7 +21,7 @@ const LoginPage = () => {
         handleSubmit,
         //reset,
         setError, //Дозволяє в React-Hook-Form записувати помилку
-        formState: {errors, isDirty}, //якщо є помилки
+        formState: {errors, /* isDirty} */ }, //якщо є помилки
     } = useForm<ILoginType>({
         resolver: zodResolver(loginSchema),
         defaultValues
