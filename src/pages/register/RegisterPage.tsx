@@ -2,8 +2,11 @@ import {type SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {registerSchema} from "./validate.ts";
 import type {IRegisterType} from "./types.ts";
+import {useState} from "react";
 
 const RegisterPage = () => {
+
+    const [preview, setPreview] = useState<string | null>(null);
 
     const defaultValues = {
         firstName: "",
@@ -11,12 +14,13 @@ const RegisterPage = () => {
         email: "",
         password: "",
         confirmPassword: "",
-        imageFile: "",
+        imageFile: null
     }
 
     const {
         register,
         handleSubmit,
+        setValue, //для запису даних у react-hook-form
         //reset,
         formState: {errors, isDirty}, //якщо є помилки
     } = useForm<IRegisterType>({
@@ -28,13 +32,54 @@ const RegisterPage = () => {
         console.log("Валідні дані форми:", data);
     };
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] ?? null;
+
+        setValue("imageFile", file, { shouldValidate: true });
+
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setPreview(url);
+        } else {
+            setPreview(null);
+        }
+    }
+
     return (
             <div className="flex items-center justify-center px-4 mt-10">
                 <div className="w-full max-w-md p-8 space-y-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
                     <h1 className="text-2xl font-bold text-center text-gray-900">Реєстрація</h1>
 
                     <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-                            <div>
+                        <div className="flex flex-col items-center gap-3">
+                            <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-300 bg-gray-100 flex items-center justify-center">
+                                {preview ? (
+                                    <img
+                                        src={preview}
+                                        alt="Прев'ю аватару"
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <span className="text-xs text-gray-400">Фото</span>
+                                )}
+                            </div>
+
+                            <label className="text-sm font-medium text-indigo-600 cursor-pointer hover:text-indigo-700">
+                                Обрати зображення
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                    className="hidden"
+                                />
+                            </label>
+
+                            {errors.imageFile && (
+                                <div className="text-red-700 text-sm">{errors.imageFile.message}</div>
+                            )}
+                        </div>
+
+                        <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Ім'я</label>
                                 <input  {...register('firstName')}
                                     type="Firstname"
@@ -80,17 +125,6 @@ const RegisterPage = () => {
                                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                             />
                             {errors.confirmPassword && <p style={{ color: 'red' }}>{errors.confirmPassword.message}</p>}
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Фото</label>
-                            <input
-                                {...register('imageFile')}
-                                type="file"
-                                accept="image/*"
-                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                            />
-                            {errors.imageFile && <p style={{ color: 'red' }}>{errors.imageFile.message}</p>}
                         </div>
 
 

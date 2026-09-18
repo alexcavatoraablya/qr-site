@@ -5,5 +5,5 @@ export interface IRegisterType
     email: string;
     password: string;
     confirmPassword: string;
-    imageFile: string;
+    imageFile: File|null;
 }
