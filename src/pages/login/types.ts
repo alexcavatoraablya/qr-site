@@ -7,3 +7,9 @@ export interface ILoginType
 export interface ILoginResponse {
     token: string;
 }
+
+export interface ITokenInfo {
+    email: string;
+    roles: string;
+    exp: number;
+}

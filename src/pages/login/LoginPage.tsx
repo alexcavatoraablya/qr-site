@@ -6,8 +6,12 @@ import clsx from "clsx";
 //import axios from "axios";
 import api from "../../api/axiosInstance.ts";
 import {useNavigate} from "react-router";
+import {useAuth} from "../../context/AuthContext.tsx";
 
 const LoginPage = () => {
+
+    const { login } = useAuth();
+
     const defaultValues : ILoginType =
     {
         email: "",
@@ -31,8 +35,9 @@ const LoginPage = () => {
     const onSubmit: SubmitHandler<ILoginType> = async (data: ILoginType) => {
         try {
             //відправляє http-запит методом post за допомогою axios на сервер
-            const response = await api.post<ILoginResponse>('/account/login', data);
-            localStorage.setItem("auth", response.data.token);
+            const result = await api.post<ILoginResponse>("/account/login", data);
+            login(result.data.token);
+            //localStorage.setItem("auth", response.data.token);
             navigate("/"); // перехід на головну
 
             //повертає дані юзера
