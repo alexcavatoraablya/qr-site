@@ -7,3 +7,7 @@ export interface IRegisterType
     confirmPassword: string;
     imageFile: File|null;
 }
+
+export interface IServerError {
+    error: string;
+}

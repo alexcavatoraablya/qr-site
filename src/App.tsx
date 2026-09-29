@@ -4,7 +4,7 @@ import LoginPage from "./pages/login/LoginPage.tsx";
 import {Route, Routes} from "react-router";
 import HomePage from "./pages/home/HomePage.tsx";
 import RegisterPage from "./pages/register/RegisterPage.tsx";
-import ProfilePage from "./pages/profile/ProfilePage.tsx";
+import ProfilePage from "./pages/profile/PtofilePage.tsx";
 
 function App() {
 

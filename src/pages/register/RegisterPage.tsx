@@ -1,7 +1,7 @@
 import {type SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {registerSchema} from "./validate.ts";
-import type {IRegisterType} from "./types.ts";
+import type {IRegisterType, IServerError} from "./types.ts";
 import {useState} from "react";
 import {useNavigate} from "react-router";
 import type {ILoginResponse} from "../login/types.ts";
@@ -27,6 +27,7 @@ const RegisterPage = () => {
         register,
         handleSubmit,
         setValue, //для запису даних у react-hook-form
+        setError,
         //reset,
         formState: {errors, isDirty}, //якщо є помилки
     } = useForm<IRegisterType>({
@@ -52,6 +53,15 @@ const RegisterPage = () => {
             //повертає дані юзера
             //console.log('Успішна відповідь сервера:', response.data);
         } catch (error) {
+            if (axios.isAxiosError<IServerError>(error))
+            {
+                const message = error.response?.data.error ?? "Щось пішло не так";
+                setError("root", { message });
+            }
+            else
+            {
+                setError("root", { message: "Невідома помилка" });
+            }
             //видає помилку
             console.error('Помилка при відправці:', error);
             //setError("root", { message: "Дані вказано невірно" }); //записуємо помилку що дані вказані невірно
