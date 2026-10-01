@@ -7,6 +7,7 @@ import {useNavigate} from "react-router";
 import type {ILoginResponse} from "../login/types.ts";
 import api from "../../api/axiosInstance.ts";
 import {useAuth} from "../../context/AuthContext.tsx";
+import axios from "axios";
 
 const RegisterPage = () => {
 
