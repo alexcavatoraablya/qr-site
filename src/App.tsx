@@ -5,6 +5,7 @@ import {Route, Routes} from "react-router";
 import HomePage from "./pages/home/HomePage.tsx";
 import RegisterPage from "./pages/register/RegisterPage.tsx";
 import ProfilePage from "./pages/profile/PtofilePage.tsx";
+import QrCodeCreatePage from "./pages/QrCodeCreate/QrCodeCreatePage.tsx";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
                     <Route path={"login"} element={<LoginPage/>}/>
                     <Route path={"register"} element={<RegisterPage/>}/>
                     <Route path={"profile"} element={<ProfilePage/>}/>
+                    <Route path={"QrCode"} element={<QrCodeCreatePage/>}/>
                 </Route>
             </Routes>
         </>
